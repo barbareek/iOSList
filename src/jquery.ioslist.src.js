@@ -36,6 +36,27 @@
             this.$fakeHeader = this.$elem.find(this.options.selectors.stationaryHeader).eq(0);
             this.$fakeHeader.addClass(this.options.classes.stationaryHeader);
 
+            this.refreshElements();
+
+            this.$fakeHeader.text(this.elems[0].headerText);
+
+            this.$listWrapper.scroll(function() {
+                scope.testPosition();
+            });
+            this.$elem.on('refreshElements',function(){
+                console.log("refresh elements......");
+                scope.refreshElements();
+                scope.addHeader();
+            });
+
+        },
+        addHeader:function(text){
+            this.$fakeHeader.text(text || this.elems[0].headerText);
+        },
+
+        refreshElements: function() {
+            var scope = this;
+            this.elems = [];
             this.$elem.find(this.options.selectors.groupContainer).each(function(index, elem) {
                 var $tmp_list = scope.$elem.find(scope.options.selectors.groupContainer).eq(index),
                     $tmp_header = $tmp_list.find(scope.options.selectors.groupHeader).eq(0),
@@ -51,13 +72,6 @@
                     'listBottom': $tmp_listHeight + $tmp_listOffset
                 });
             });
-
-            this.$fakeHeader.text(this.elems[0].headerText);
-
-            this.$listWrapper.scroll(function() {
-                scope.testPosition();
-            });
-
         },
 
         testPosition: function() {
